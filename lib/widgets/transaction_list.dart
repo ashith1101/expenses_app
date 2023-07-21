@@ -12,24 +12,26 @@ class TransactionList extends StatelessWidget {
     return Container(
       height: 460,
       child: transactions.isEmpty
-          ? Column(
-              children: <Widget>[
-                Text(
-                  'No transactions added yet!',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/image/waiting.png',
-                    fit: BoxFit.cover,
+          ? LayoutBuilder(builder: (ctx, constraints) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    'No transactions added yet!',
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                )
-              ],
-            )
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset(
+                      'assets/image/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              );
+            })
           : ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
@@ -48,13 +50,13 @@ class TransactionList extends StatelessWidget {
                       transactions[index].title,
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    subtitle:
-                        Text(DateFormat.yMMMd().format(transactions[index].date)
-                        ),
+                    subtitle: Text(
+                        DateFormat.yMMMd().format(transactions[index].date)),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       color: Theme.of(context).errorColor,
-                      onPressed: ()=>deleteTx(transactions[index].id,
+                      onPressed: () => deleteTx(
+                        transactions[index].id,
                       ),
                     ),
                   ),
